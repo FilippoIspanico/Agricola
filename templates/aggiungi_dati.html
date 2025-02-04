@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aggiungi Nuovi Dati</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f8f8;
+            text-align: center;
+            padding: 50px;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            max-width: 600px;
+            margin: auto;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+        h1 {
+            color: #007bff;
+        }
+        form {
+            margin-top: 20px;
+        }
+        label {
+            display: block;
+            margin: 20px 0 10px;
+            font-size: 18px;
+        }
+        select, input[type="file"] {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button {
+            display: block;
+            width: 100%;
+            padding: 15px;
+            margin: 30px 0;
+            font-size: 18px;
+            color: white;
+            background-color: #007bff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        /* Overlay per il caricamento */
+        #loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        #loading-overlay .message {
+            font-size: 24px;
+            color: #007bff;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Aggiungi Nuovi Dati</h1>
+        <form id="upload-form" action="/carica-dati" method="post" enctype="multipart/form-data">
+            <label for="tipo-dato">Seleziona il tipo di dato da caricare:</label>
+            <select id="tipo-dato" name="tipo_dato" required>
+                <option value="dati3">Dati 3 - Flussi</option>
+                <option value="dati4">Dati 4 - Mastiti (registro eventi)</option>
+                <option value="dati5">Dati 5 - Analisi Latte (Urea)</option>
+                <option value="dati6">Dati 6 - Cellule Differenziali (in sviluppo)</option>
+            </select>
+
+            <label for="file-dato">Carica il file (CSV, Excel, PDF):</label>
+            <input type="file" id="file-dato" name="file_dato" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf" required>
+
+            <button type="submit" class="button">Carica Dato</button>
+        </form>
+    </div>
+
+    <!-- Overlay per mostrare il messaggio di caricamento -->
+    <div id="loading-overlay">
+        <div class="message">Elaborazione in corso, attendere prego...</div>
+    </div>
+
+    <script>
+        // Al submit del form, mostra l'overlay
+        document.getElementById('upload-form').addEventListener('submit', function() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        });
+    </script>
+</body>
+</html>

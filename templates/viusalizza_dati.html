@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizza Dati</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f8f8f8;
+      padding: 50px;
+      margin: 0;
+    }
+    .container {
+      background: white;
+      max-width: 800px;
+      margin: auto;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      color: #007bff;
+      text-align: center;
+    }
+    form {
+      margin-bottom: 30px;
+    }
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-size: 18px;
+    }
+    select, button {
+      padding: 10px;
+      font-size: 16px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #results {
+      margin-top: 30px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    table, th, td {
+      border: 1px solid #ccc;
+    }
+    th, td {
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background-color: #f0f0f0;
+      cursor: pointer;
+    }
+    th button {
+      background: none;
+      border: none;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      padding: 0;
+      margin-left: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Visualizza Dati Caricati</h1>
+    <form id="query-form">
+      <label for="query-select">Seleziona una query da eseguire:</label>
+      <select id="query-select" name="query">
+
+        <option value="flussi">Visualizza dati Flussi (Dati 3)</option>
+        <option value="mastiti">Visualizza dati Mastiti (Dati 4)</option>
+        <option value="dati5">Visualizza dati Analisi Latte (Dati 5)</option>
+        <option value="dati6">Visualizza dati Cellule Differenziali (Dati 6)</option>
+      </select>
+      <br>
+      <button type="submit">Esegui Query</button>
+    </form>
+    <div id="results">
+      <!-- Qui verranno visualizzati i risultati della query -->
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('query-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+      var query = document.getElementById('query-select').value;
+
+      // Mostra un messaggio di caricamento
+      document.getElementById('results').innerHTML = '<p>Caricamento dati in corso...</p>';
+
+      // Invia una richiesta al backend (si suppone che la route /esegui-query restituisca JSON)
+      fetch('/esegui-query?query=' + encodeURIComponent(query))
+        .then(response => response.json())
+        .then(data => {
+          if (data.length === 0) {
+            document.getElementById('results').innerHTML = '<p>Nessun dato trovato.</p>';
+            return;
+          }
+
+          // Costruisce una tabella per visualizzare i dati
+          var table = '<table><thead><tr>';
+          // Crea le intestazioni della tabella utilizzando le chiavi del primo oggetto
+          Object.keys(data[0]).forEach(function(key) {
+            table += '<th>' + key + ' <button onclick="sortTable(\'' + key + '\')">▲▼</button></th>';
+          });
+          table += '</tr></thead><tbody>';
+          data.forEach(function(row) {
+            table += '<tr>';
+            Object.values(row).forEach(function(cell) {
+              table += '<td>' + cell + '</td>';
+            });
+            table += '</tr>';
+          });
+          table += '</tbody></table>';
+          document.getElementById('results').innerHTML = table;
+        })
+        .catch(error => {
+          console.error('Errore:', error);
+          document.getElementById('results').innerHTML = '<p>Si è verificato un errore durante il caricamento dei dati.</p>';
+        });
+    });
+
+    let currentData = []; // Store the current data for sorting
+
+    function sortTable(column) {
+      const table = document.querySelector('#results table');
+      const tbody = table.querySelector('tbody');
+      const rows = Array.from(tbody.querySelectorAll('tr'));
+
+      // Toggle sorting order (ascending/descending)
+      const isAscending = !table.dataset.sortAscending || table.dataset.sortAscending === 'false';
+      table.dataset.sortAscending = isAscending;
+
+      // Sort the rows based on the column
+      rows.sort((a, b) => {
+        const aValue = a.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
+        const bValue = b.querySelector(`td:nth-child(${getColumnIndex(column)})`).textContent;
+
+        if (isAscending) {
+          return aValue.localeCompare(bValue, undefined, { numeric: true });
+        } else {
+          return bValue.localeCompare(aValue, undefined, { numeric: true });
+        }
+      });
+
+      // Rebuild the table with sorted rows
+      tbody.innerHTML = '';
+      rows.forEach(row => tbody.appendChild(row));
+    }
+
+    function getColumnIndex(column) {
+      const table = document.querySelector('#results table');
+      const headers = Array.from(table.querySelectorAll('th'));
+      return headers.findIndex(header => header.textContent.trim().startsWith(column)) + 1;
+    }
+  </script>
+</body>
+</html>
