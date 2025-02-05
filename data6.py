@@ -62,11 +62,10 @@ def load_data6(path_to_file: str):
 
             cow_data = df[df['Id'] == cow]
 
-            #import pdb; pdb.set_trace()
-            # date = DATE_OF_MEASUREMENTS
+
             try:
                 differential_cells: float = cow_data['CelluleDifferenziali'].values[0]
-                lactN: int = cow_data['LactN']
+                lactN: int = cow_data['LactN'].iloc[0]
                 if not pd.isna(differential_cells) and not pd.isna(lactN):
 
                     entry = Differential(
@@ -87,3 +86,4 @@ def load_data6(path_to_file: str):
             session.rollback()
             print(f"skipping df {idx}")
 
+load_data6('/home/filippo/Downloads/1370806_PST_GetLA13_CelluleDifferenziali_MS_ViaEmail_20200618095821187.pdf')

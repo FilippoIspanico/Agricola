@@ -118,6 +118,11 @@ class Differential(Base):
             "lactN": self.lactN
         }
 
+    def __init__(self, date, cow_id, differential_cells, lactN):
+        self.date = date
+        self.cow_id = cow_id
+        self.differential_cells = differential_cells
+        self.lactN = lactN
 
 engine = create_engine("sqlite:///cow.db", echo=True)
 Base.metadata.create_all(bind = engine)
