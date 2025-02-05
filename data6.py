@@ -86,4 +86,4 @@ def load_data6(path_to_file: str):
             session.rollback()
             print(f"skipping df {idx}")
 
-load_data6('/home/filippo/Downloads/1370806_PST_GetLA13_CelluleDifferenziali_MS_ViaEmail_20200618095821187.pdf')
+#load_data6('/home/filippo/Downloads/1370806_PST_GetLA13_CelluleDifferenziali_MS_ViaEmail_20200618095821187.pdf')

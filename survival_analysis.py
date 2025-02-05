@@ -34,11 +34,8 @@ def execute_sa(threshold = 0.1):
     session = Session()
 
     QUERY_LIMIT = 5000  # we define this query limit here to avoid huge computing times and crashing.
-    view_name = 'survival_df'
-    SurvivalDf = Table(view_name, Base.metadata, autoload_with=engine)
+    view_name = 'view_for_sa'
 
-
-    #dati = session.query(SurvivalDf).order_by(SurvivalDf.c.cow_id).limit(QUERY_LIMIT).all()
     query = f"SELECT * FROM {view_name} WHERE cow_id IS NOT NULL ORDER BY cow_id LIMIT {QUERY_LIMIT};"
     result = session.execute(text(query))
     dati = result.fetchall()
@@ -47,6 +44,7 @@ def execute_sa(threshold = 0.1):
     final_features = ['Flux0', 'Flux3', 'FluxMonotone', 'Prod', 'DifferentialCells',
                   'LastDifferentialCells', 'Urea', 'NumberPastMastitis', 'LactN']
     cow_id = dati['cow_id']
+    time_healty = dati['days_healthy']
     dati = dati[final_features]
     dati = dati.apply(pd.to_numeric, errors='coerce')
 
@@ -76,7 +74,7 @@ def execute_sa(threshold = 0.1):
     with open('fitted_model/survival_model_m2.pkl', 'rb') as f:
         m2 = pickle.load(f)
 
-    SF = m2.predict_survival_function(df_std) #, conditional_after = censored_subjects_last_obs
+    SF = m2.predict_survival_function(df_std, conditional_after=time_healty) #, conditional_after = censored_subjects_last_obs
 
     to_cure = get_cows_to_cure(SF, threshold)
     plt.plot(SF)
@@ -94,4 +92,4 @@ def execute_sa(threshold = 0.1):
 
 
 
-#print(execute_sa())
+print(execute_sa())
