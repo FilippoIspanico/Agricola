@@ -14,6 +14,8 @@ from sqlalchemy.orm import sessionmaker
 
 from dbInteractions import Mastitis, Fluxes, Urea, Differential
 
+from survival_analysis import execute_sa
+
 app = Flask(__name__)
 app.secret_key = 'chiave_super_segretissima'
 
@@ -115,6 +117,16 @@ def esegui_query():
 
     return jsonify(risultati)
 
+@app.route('/analisi-mastite')
+def analisi_mastite():
+    return render_template('analisi-mastite.html')
+
+
+@app.route('/process-analysis', methods=['POST'])
+def process_analysis():
+    threshold = float(request.form.get('threshold', 0.1))
+    to_cure = execute_sa(threshold)
+    return render_template('sa_results.html',  cow_ids=to_cure)
 
 if __name__ == '__main__':
     app.run(debug=True)

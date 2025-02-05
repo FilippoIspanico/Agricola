@@ -41,7 +41,7 @@ def load_data6(path_to_file: str):
     analysis_date = min(dates)
     print(analysis_date)
 
-    dfs = tabula.read_pdf("Dati 6 (3).pdf", pages='all')
+    dfs = tabula.read_pdf(path_to_file, pages='all')
     print("Pdf conversion completed!")
 
 
@@ -87,4 +87,3 @@ def load_data6(path_to_file: str):
             session.rollback()
             print(f"skipping df {idx}")
 
-# load_data6('Dati 6 (3).pdf')

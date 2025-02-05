@@ -79,13 +79,13 @@
         <form id="upload-form" action="/carica-dati" method="post" enctype="multipart/form-data">
             <label for="tipo-dato">Seleziona il tipo di dato da caricare:</label>
             <select id="tipo-dato" name="tipo_dato" required>
-                <option value="dati3">Dati 3 - Flussi</option>
-                <option value="dati4">Dati 4 - Mastiti (registro eventi)</option>
-                <option value="dati5">Dati 5 - Analisi Latte (Urea)</option>
-                <option value="dati6">Dati 6 - Cellule Differenziali (in sviluppo)</option>
+                <option value="dati3">Dati 3 - Flussi: excel</option>
+                <option value="dati4">Dati 4 - Mastiti (registro eventi): excel</option>
+                <option value="dati5">Dati 5 - Analisi Latte (Urea): excel</option>
+                <option value="dati6">Dati 6 - Cellule Differenziali: pdf</option>
             </select>
 
-            <label for="file-dato">Carica il file (CSV, Excel, PDF):</label>
+            <label for="file-dato">Carica il file (Excel, o PDF se cellule differenziali):</label>
             <input type="file" id="file-dato" name="file_dato" accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/pdf" required>
 
             <button type="submit" class="button">Carica Dato</button>

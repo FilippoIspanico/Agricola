@@ -1,0 +1,8 @@
+TODO:
+1. order data visualization tables so that the date column, always present, it is the first one
+2. AI assistant for queries
+3. solve LactN problem (it is always None)
+6. multiple files processing!
+7. add preprocessing of mastitis db when loading new data. We need to remove multiple cows.
+8. Solve Prod problem (right now it is always 0 we need to read it from the data)
+9. fix the predicition of SF. in the notebook you where using an argument in the call to the preict that involes T. We need to use it
