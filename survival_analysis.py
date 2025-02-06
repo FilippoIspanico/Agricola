@@ -1,3 +1,4 @@
+import matplotlib
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,6 +10,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy import create_engine, Table, text
 
+matplotlib.use('Agg')
 
 def get_cows_to_cure(SF, threshold = 0.1):
     to_cure = []
@@ -92,4 +94,4 @@ def execute_sa(threshold = 0.1):
 
 
 
-print(execute_sa())
+#print(execute_sa())
