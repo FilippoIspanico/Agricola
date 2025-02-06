@@ -107,7 +107,7 @@
                 <img src="static/all_lines.jpg" alt="Analysis Plot 2" class="plot-image">
             </div>
 
-            <h2>Cows Requiring Attention</h2>
+            <h2>Cows Requiring Attention: {{  cow_ids | length }}</h2>
             <table>
                 <thead>
                     <tr>
@@ -125,7 +125,7 @@
                 </tbody>
             </table>
 
-            <a href="{{ url_for('index') }}" class="back-btn">Back to Analysis</a>
+            <a href="{{ url_for('index') }}" class="back-btn">Back to Home</a>
         </div>
     </div>
 </body>
